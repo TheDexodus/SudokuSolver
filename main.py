@@ -1,8 +1,8 @@
-from src.cell.CandidateCell import CandidateCell
-from src.loader.TxtFileFieldLoader import TxtFileFieldLoader
-from src.possible.PossibleHelper import PossibleHelper
-from src.solver.RectangleSolver import RectangleSolver
-from src.unit.Coordinate import Coordinate
+from src.cell.candidate_cell import CandidateCell
+from src.loader.txt_file_field_loader import TxtFileFieldLoader
+from src.possible.possible_helper import PossibleHelper
+from src.solver.rectangle_solver import RectangleSolver
+from src.unit.coordinate import Coordinate
 
 file_loader = TxtFileFieldLoader("tasks/task1.txt")
 field = file_loader.load()
