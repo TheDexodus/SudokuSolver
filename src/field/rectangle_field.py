@@ -1,116 +1,57 @@
-from field.field import Field
+from typing import Iterator
+
+from src.coordinate.two_dimensional_coordinate import TwoDimensionalCoordinate
+from src.field.field import Field
 from src.cell.cell import Cell
-from repository.grid_cell_repository import GridCellRepository
-from repository.line_cell_repository import LineCellRepository
+from src.repository.grid_cell_repository import GridCellRepository
 from src.unit.coordinate import Coordinate
 
 
 class RectangleField(Field):
-    size: tuple[int, int]
-    grids: dict[tuple[int, int], GridCellRepository]
+    _size: tuple[int, int]
+    _grids: dict[TwoDimensionalCoordinate, GridCellRepository]
 
     def __init__(self, size: tuple[int, int]) -> None:
-        self.size = size
-        self.grids = {}
+        self._size = size
+        self._grids = {}
 
-        for x in range(1, size[0] + 1):
-            for y in range(1, size[1] + 1):
-                self.grids[x, y] = GridCellRepository(size)
+        for y in range(1, size[1] + 1):
+            for x in range(1, size[0] + 1):
+                self._grids[TwoDimensionalCoordinate(x, y)] = GridCellRepository(size)
 
     def get_size(self) -> tuple[int, int]:
-        return self.size
+        return self._size
 
-    def get_grid(self, coordinate: Coordinate) -> GridCellRepository:
-        if coordinate.to_tuple() in self.grids:
-            return self.grids[*coordinate]
+    def get_grid(self, coordinate: TwoDimensionalCoordinate) -> GridCellRepository:
+        if coordinate in self._grids:
+            return self._grids[coordinate]
 
         raise IndexError("Coordinate out of bounds")
 
     def get_cell(self, coordinate: Coordinate) -> Cell | None:
-        x, y = (coordinate.x - 1) // self.size[0] + 1, (coordinate.y - 1) // self.size[1] + 1
-        grid_x, grid_y = (coordinate.x - 1) % self.size[0] + 1, (coordinate.y - 1) % self.size[1] + 1
+        x, y = (coordinate.x - 1) // self._size[0] + 1, (coordinate.y - 1) // self._size[1] + 1
+        grid_x, grid_y = (coordinate.x - 1) % self._size[0] + 1, (coordinate.y - 1) % self._size[1] + 1
 
-        return self.grids[x, y].get_cell(Coordinate(grid_x, grid_y))
-
-    def get_vertical_line(self, number: int) -> LineCellRepository:
-        if 1 <= number <= self.size[0] * self.size[1]:
-            x = (number - 1) // self.size[0] + 1
-            grid_x = (number - 1) % self.size[0] + 1
-
-            line = LineCellRepository(self.size[0] * self.size[0])
-
-            for y in range(1, self.size[1] + 1):
-                grid = self.get_grid(Coordinate(x, y))
-
-                for grid_y in range(1, self.size[0] + 1):
-                    grid_cell = grid.get_cell(Coordinate(grid_x, grid_y))
-                    line.set_cell((y - 1) * self.size[1] + grid_y, grid_cell)
-
-            return line
-
-        raise IndexError("Number vertical line out of bounds")
-
-    def get_horizontal_line(self, number: int) -> LineCellRepository:
-        if 1 <= number <= self.size[0] * self.size[1]:
-            y = (number - 1) // self.size[1] + 1
-            grid_y = (number - 1) % self.size[1] + 1
-
-            line = LineCellRepository(self.size[0] * self.size[0])
-
-            for x in range(1, self.size[1] + 1):
-                grid = self.get_grid(Coordinate(x, y))
-
-                for grid_x in range(1, self.size[0] + 1):
-                    grid_cell = grid.get_cell(Coordinate(grid_x, grid_y))
-                    line.set_cell((x - 1) * self.size[0] + grid_x, grid_cell)
-
-            return line
-
-        raise IndexError(f"Number vertical line out of bounds({number})")
-
-    def check_correct(self) -> bool:
-        for grid in self.grids.values():
-            if not grid.check_correct():
-                return False
-
-        return self.check_correct_vertical_lines() and self.check_correct_horizontal_lines()
-
-    def check_correct_vertical_lines(self):
-        for x in range(1, self.size[0] + 1):
-            if not self.get_vertical_line(x).check_correct():
-                return False
-
-        return True
-
-    def check_correct_horizontal_lines(self):
-        for y in range(1, self.size[0] + 1):
-            if not self.get_horizontal_line(y).check_correct():
-                return False
-
-        return True
-
-    def check_final(self) -> bool:
-        for grid in self.grids.values():
-            if not grid.check_final():
-                return False
-
-        return self.check_correct()
+        return self._grids[TwoDimensionalCoordinate(x, y)].get_cell(TwoDimensionalCoordinate(grid_x, grid_y))
 
     def __str__(self) -> str:
         result = ""
 
-        for y in range(1, self.size[1] + 1):
-            result += "\n+" + (("-" * (self.size[0] * 2 + 1)) + "+") * self.size[0]
-            for grid_y in range(1, self.size[1] + 1):
+        for y in range(1, self._size[1] + 1):
+            result += "\n+" + (("-" * (self._size[0] * 2 + 1)) + "+") * self._size[0]
+            for grid_y in range(1, self._size[1] + 1):
                 result += "\n"
-                for x in range(1, self.size[0] + 1):
+                for x in range(1, self._size[0] + 1):
                     result += "| "
-                    grid = self.get_grid(Coordinate(x, y))
+                    grid = self.get_grid(TwoDimensionalCoordinate(x, y))
 
-                    for grid_x in range(1, self.size[0] + 1):
-                        cell = grid.get_cell(Coordinate(grid_x, grid_y))
+                    for grid_x in range(1, self._size[0] + 1):
+                        cell = grid.get_cell(TwoDimensionalCoordinate(grid_x, grid_y))
                         result += str(" " if cell is None else str(cell)) + " "
                 result += "|"
-        result += "\n+" + (("-" * (self.size[0] * 2 + 1)) + "+") * self.size[0]
+        result += "\n+" + (("-" * (self._size[0] * 2 + 1)) + "+") * self._size[0]
 
         return result.lstrip("\n")
+
+    def __iter__(self) -> Iterator[tuple[TwoDimensionalCoordinate, GridCellRepository]]:
+        return iter(self._grids.items())

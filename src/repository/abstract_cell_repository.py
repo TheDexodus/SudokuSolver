@@ -30,5 +30,5 @@ class AbstractCellRepository(CellRepository, Generic[CoordinateT]):
 
         self._cells[coordinate] = cell
 
-    def __iter__(self) -> Iterator[tuple[Coordinate, Cell]]:
+    def __iter__(self) -> Iterator[tuple[CoordinateT, Cell]]:
         return iter(self._cells.items())

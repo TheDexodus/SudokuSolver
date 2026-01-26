@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
+from typing import Iterator
 
-from repository.grid_cell_repository import GridCellRepository
-from repository.line_cell_repository import LineCellRepository
-from src.unit.coordinate import Coordinate
+from src.coordinate.two_dimensional_coordinate import TwoDimensionalCoordinate
+from src.repository.grid_cell_repository import GridCellRepository
 
 
 class Field(ABC):
@@ -11,29 +11,13 @@ class Field(ABC):
         pass
 
     @abstractmethod
-    def get_grid(self, coordinate: Coordinate) -> GridCellRepository:
-        pass
-
-    @abstractmethod
-    def get_vertical_line(self, number: int) -> LineCellRepository:
-        pass
-
-    @abstractmethod
-    def get_horizontal_line(self, number: int) -> LineCellRepository:
-        pass
-
-    @abstractmethod
-    def check_correct(self) -> bool:
-        pass
-
-    @abstractmethod
-    def check_final(self) -> bool:
-        pass
-
-    @abstractmethod
-    def clone(self) -> "Field":
+    def get_grid(self, coordinate: TwoDimensionalCoordinate) -> GridCellRepository:
         pass
 
     @abstractmethod
     def __str__(self):
+        pass
+
+    @abstractmethod
+    def __iter__(self) -> Iterator[GridCellRepository]:
         pass

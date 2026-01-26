@@ -42,3 +42,13 @@ class CandidateCell(AbstractCell):
 
     def clone(self) -> "CandidateCell":
         return CandidateCell(self.possible_values)
+
+    def same_possible_values(self, candidate_cell: "CandidateCell") -> bool:
+        if len(self.possible_values) != len(candidate_cell.possible_values):
+            return False
+
+        for possible_value in self.possible_values:
+            if possible_value not in candidate_cell.possible_values:
+                return False
+
+        return True

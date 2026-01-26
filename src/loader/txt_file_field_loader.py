@@ -1,7 +1,8 @@
 from src.cell.constant_cell import ConstantCell
+from src.cell.empty_cell import EmptyCell
+from src.coordinate.two_dimensional_coordinate import TwoDimensionalCoordinate
 from src.field.rectangle_field import RectangleField
 from src.loader.abstract_file_field_loader import AbstractFileFieldLoader
-from src.unit.coordinate import Coordinate
 
 
 class TxtFileFieldLoader(AbstractFileFieldLoader):
@@ -11,13 +12,13 @@ class TxtFileFieldLoader(AbstractFileFieldLoader):
         field = RectangleField(self.get_field_size())
 
         for coordinate, value in self.get_values().items():
-            grid_coordinate = Coordinate(coordinate.x // self.field_size[0] + 1,
-                                         coordinate.y // self.field_size[1] + 1)
+            grid_coordinate = TwoDimensionalCoordinate(coordinate.get_x() // self.field_size[0] + 1,
+                                                       coordinate.get_y() // self.field_size[1] + 1)
             grid = field.get_grid(grid_coordinate)
-            cell_coordinate = Coordinate(coordinate.x % self.field_size[0] + 1,
-                                         coordinate.y % self.field_size[1] + 1)
+            cell_coordinate = TwoDimensionalCoordinate(coordinate.get_x() % self.field_size[0] + 1,
+                                                       coordinate.get_y() % self.field_size[1] + 1)
 
-            grid.set_cell(cell_coordinate, None if value is None else ConstantCell(value))
+            grid.set_cell(cell_coordinate, EmptyCell() if value is None else ConstantCell(value))
 
         return field
 
@@ -38,8 +39,8 @@ class TxtFileFieldLoader(AbstractFileFieldLoader):
 
         return self.field_size
 
-    def get_values(self) -> dict[Coordinate, int | None]:
-        values: dict[Coordinate, int | None] = {}
+    def get_values(self) -> dict[TwoDimensionalCoordinate, int | None]:
+        values: dict[TwoDimensionalCoordinate, int | None] = {}
 
         with self.file_path.open("r", encoding="utf-8") as file:
             y = 0
@@ -59,10 +60,10 @@ class TxtFileFieldLoader(AbstractFileFieldLoader):
                         continue
 
                     if char == " ":
-                        values[Coordinate(x, y)] = None
+                        values[TwoDimensionalCoordinate(x, y)] = None
                         x += 1
                     elif char.isdigit():
-                        values[Coordinate(x, y)] = int(char)
+                        values[TwoDimensionalCoordinate(x, y)] = int(char)
                         x += 1
 
                 y += 1
