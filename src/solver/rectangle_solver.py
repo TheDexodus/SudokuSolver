@@ -44,7 +44,7 @@ class RectangleSolver(Solver):
                 has_updates_in_loop = True
 
                 if field is None:
-                    raise RuntimeError("Sudoku can't resolve")
+                    raise RuntimeError(f"Sudoku can't resolve(loops_counter={loops_counter})")
 
             while has_updates_in_loop:
                 has_updates_in_loop = False

@@ -96,7 +96,7 @@ class FieldDrawer:
                 cell_y = (row - 1) % field.get_size()[0] + 1
 
                 cell = field.get_grid(TwoDimensionalCoordinate(grid_x, grid_y)).get_cell(TwoDimensionalCoordinate(cell_x, cell_y))
-                value = cell.get_value()
+                value = str(cell)
 
                 if isinstance(cell, CandidateCell):
                     possible_values = cell.get_possible_values()
@@ -109,8 +109,10 @@ class FieldDrawer:
                         sub_x = (value - 1) % field.get_size()[1]
                         sub_y = (value - 1) // field.get_size()[0]
 
+                        str_possible_value = str(value) if value < 10 else chr(ord("A") + value - 10)
+
                         text_surface = self.candidate_font.render(
-                            str(value), True, self.candidate_color
+                            str(str_possible_value), True, self.candidate_color
                         )
                         text_rect = text_surface.get_rect()
 
@@ -130,7 +132,7 @@ class FieldDrawer:
                         text_rect.center = (pixel_x, pixel_y)
                         screen.blit(text_surface, text_rect)
                 else:
-                    if value is None or value == 0:
+                    if value == " " or value == 0:
                         continue
 
                     text_surface = self.font.render(str(value), True, self.number_color)

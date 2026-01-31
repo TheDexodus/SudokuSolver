@@ -65,6 +65,9 @@ class TxtFileFieldLoader(AbstractFileFieldLoader):
                     elif char.isdigit():
                         values[TwoDimensionalCoordinate(x, y)] = int(char)
                         x += 1
+                    elif ord("A") <= ord(char) <= ord("Z"):
+                        values[TwoDimensionalCoordinate(x, y)] = ord(char) - ord("A") + 10
+                        x += 1
 
                 y += 1
 
