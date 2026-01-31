@@ -17,3 +17,7 @@ class Cell(ABC):
     @abstractmethod
     def __eq__(self, other: "Cell") -> bool:
         pass
+
+    @abstractmethod
+    def clone(self) -> "Cell":
+        pass

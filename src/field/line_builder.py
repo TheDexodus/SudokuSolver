@@ -8,8 +8,8 @@ class LineBuilder:
     @classmethod
     def build_vertical_line(cls, field: Field, order: int) -> LineCellRepository:
         line = LineCellRepository(field.get_size()[1] ** 2)
-        grid_x = (order - 1) % 3 + 1
-        cell_x = (order - 1) // 3 + 1
+        grid_x = (order - 1) // 3 + 1
+        cell_x = (order - 1) % 3 + 1
 
         for grid_y in range(1, field.get_size()[1] + 1):
             grid = field.get_grid(TwoDimensionalCoordinate(grid_x, grid_y))
@@ -23,8 +23,8 @@ class LineBuilder:
     @classmethod
     def build_horizontal_line(cls, field: Field, order: int) -> LineCellRepository:
         line = LineCellRepository(field.get_size()[0] ** 2)
-        grid_y = (order - 1) % 3 + 1
-        cell_y = (order - 1) // 3 + 1
+        grid_y = (order - 1) // 3 + 1
+        cell_y = (order - 1) % 3 + 1
 
         for grid_x in range(1, field.get_size()[0] + 1):
             grid = field.get_grid(TwoDimensionalCoordinate(grid_x, grid_y))
@@ -38,8 +38,9 @@ class LineBuilder:
     @classmethod
     def build_all_vertical_lines(cls, field: Field) -> list[LineCellRepository]:
         lines: list[LineCellRepository] = []
+        grid_size_coordinate = field.get_grid(TwoDimensionalCoordinate(1, 1)).get_size()
 
-        for order in range(1, field.get_size()[0] + 1):
+        for order in range(1, field.get_size()[0] * grid_size_coordinate[0] + 1):
             lines.append(cls.build_vertical_line(field, order))
 
         return lines
@@ -47,8 +48,9 @@ class LineBuilder:
     @classmethod
     def build_all_horizontal_lines(cls, field: Field) -> list[LineCellRepository]:
         lines: list[LineCellRepository] = []
+        grid_size_coordinate = field.get_grid(TwoDimensionalCoordinate(1, 1)).get_size()
 
-        for order in range(1, field.get_size()[0] + 1):
+        for order in range(1, field.get_size()[1] * grid_size_coordinate[1] + 1):
             lines.append(cls.build_horizontal_line(field, order))
 
         return lines

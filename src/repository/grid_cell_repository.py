@@ -16,3 +16,11 @@ class GridCellRepository(AbstractCellRepository[TwoDimensionalCoordinate]):
 
     def get_size(self) -> tuple[int, int]:
         return self._size
+
+    def clone(self) -> "GridCellRepository":
+        new_repository = GridCellRepository(self._size)
+
+        for coordinate, cell in self:
+            new_repository.set_cell(coordinate, cell.clone())
+
+        return new_repository

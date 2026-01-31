@@ -1,5 +1,3 @@
-import pytest
-
 from src.cell.constant_cell import ConstantCell
 from src.coordinate.ordinal_coordinate import OrdinalCoordinate
 from src.coordinate.two_dimensional_coordinate import TwoDimensionalCoordinate
@@ -23,19 +21,21 @@ def get_ascending_rectangle_field():
 
 def test_vertical_line_build():
     rectangle_field = get_ascending_rectangle_field()
-    line = LineBuilder.build_vertical_line(rectangle_field, 1)
 
-    assert line.get_count_cells() == 9
+    for j in range(1, 10):
+        line = LineBuilder.build_vertical_line(rectangle_field, j)
+        assert line.get_count_cells() == 9
 
-    for i in range(1, 10):
-        assert line.get_cell(OrdinalCoordinate(i)).get_value() == i + 1
+        for i in range(1, 10):
+            assert line.get_cell(OrdinalCoordinate(i)).get_value() == i + j
 
 
 def test_horizontal_line_build():
     rectangle_field = get_ascending_rectangle_field()
-    line = LineBuilder.build_horizontal_line(rectangle_field, 1)
 
-    assert line.get_count_cells() == 9
+    for j in range(1, 10):
+        line = LineBuilder.build_horizontal_line(rectangle_field, j)
+        assert line.get_count_cells() == 9
 
-    for i in range(1, 10):
-        assert line.get_cell(OrdinalCoordinate(i)).get_value() == i + 1
+        for i in range(1, 10):
+            assert line.get_cell(OrdinalCoordinate(i)).get_value() == i + j

@@ -12,3 +12,6 @@ class ConstantCell(AbstractCell):
 
     def can_be_replaced(self) -> bool:
         return False
+
+    def clone(self) -> "ConstantCell":
+        return ConstantCell(self.value)

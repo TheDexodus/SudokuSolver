@@ -21,3 +21,7 @@ class Field(ABC):
     @abstractmethod
     def __iter__(self) -> Iterator[GridCellRepository]:
         pass
+
+    @abstractmethod
+    def clone(self) -> "Field":
+        pass

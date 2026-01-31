@@ -1,8 +1,8 @@
 from typing import Iterator
 
+from src.cell.cell import Cell
 from src.coordinate.two_dimensional_coordinate import TwoDimensionalCoordinate
 from src.field.field import Field
-from src.cell.cell import Cell
 from src.repository.grid_cell_repository import GridCellRepository
 from src.unit.coordinate import Coordinate
 
@@ -55,3 +55,11 @@ class RectangleField(Field):
 
     def __iter__(self) -> Iterator[tuple[TwoDimensionalCoordinate, GridCellRepository]]:
         return iter(self._grids.items())
+
+    def clone(self) -> "RectangleField":
+        field = RectangleField(self._size)
+
+        for coordinate, grid in self:
+            field._grids[coordinate] = grid.clone()
+
+        return field

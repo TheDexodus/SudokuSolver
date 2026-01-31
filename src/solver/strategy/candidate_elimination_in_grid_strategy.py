@@ -1,7 +1,5 @@
 from src.cell.candidate_cell import CandidateCell
 from src.cell.constant_cell import ConstantCell
-from src.coordinate.ordinal_coordinate import OrdinalCoordinate
-from src.coordinate.two_dimensional_coordinate import TwoDimensionalCoordinate
 from src.field.line_builder import LineBuilder
 from src.field.rectangle_field import RectangleField
 from src.repository.cell_repository import CellRepository
@@ -17,17 +15,18 @@ class CandidateEliminationInGridStrategy(Strategy):
             have_updates = have_updates or have_updates_in_repository
 
         for order, line in enumerate(LineBuilder.build_all_horizontal_lines(field), 1):
-            line, have_updates_in_repository = self._apply_for_cell_repository(line)
+            new_line, have_updates_in_repository = self._apply_for_cell_repository(line)
 
             if have_updates_in_repository:
-                LineBuilder.insert_horizontal_line(field, line, order)
+                LineBuilder.insert_horizontal_line(field, new_line, order)
                 have_updates = True
 
         for order, line in enumerate(LineBuilder.build_all_vertical_lines(field), 1):
-            line, have_updates_in_repository = self._apply_for_cell_repository(line)
+            new_line, have_updates_in_repository = self._apply_for_cell_repository(line)
 
             if have_updates_in_repository:
-                LineBuilder.insert_vertical_line(field, line, order)
+                LineBuilder.insert_vertical_line(field, new_line, order)
+
                 have_updates = True
 
         return field, have_updates
@@ -43,6 +42,7 @@ class CandidateEliminationInGridStrategy(Strategy):
         for coordinate, cell in cell_repository:
             if isinstance(cell, CandidateCell):
                 new_candidate_cell = cell - candidate_cell
+
                 if not new_candidate_cell.same_possible_values(cell):
                     have_updates = True
                     cell_repository.set_cell(coordinate, new_candidate_cell)

@@ -1,8 +1,10 @@
+from src.cell.empty_cell import EmptyCell
 from src.checker.checker import Checker
 from src.checker.grid_checker import GridChecker
 from src.checker.line_checker import LineChecker
 from src.field.line_builder import LineBuilder
 from src.field.rectangle_field import RectangleField
+from src.solver.strategy.init_candidates_strategy import InitialCandidatesStrategy
 
 
 class RectangleFieldChecker(Checker[RectangleField]):
@@ -29,6 +31,16 @@ class RectangleFieldChecker(Checker[RectangleField]):
         for coordinate, grid in obj:
             if not self._grid_checker.check_correct(grid):
                 return False
+
+        obj, has_updates = InitialCandidatesStrategy().apply(obj.clone())
+
+        if has_updates:
+            return True
+
+        for _, grid in obj:
+            for _, cell in grid:
+                if isinstance(cell, EmptyCell):
+                    return False
 
         return True
 

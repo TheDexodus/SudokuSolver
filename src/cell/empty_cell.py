@@ -7,3 +7,6 @@ class EmptyCell(AbstractCell):
 
     def can_be_replaced(self) -> bool:
         return True
+
+    def clone(self) -> "EmptyCell":
+        return EmptyCell()

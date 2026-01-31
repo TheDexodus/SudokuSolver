@@ -1,7 +1,6 @@
-from src.repository.abstract_cell_repository import AbstractCellRepository
-from src.coordinate.ordinal_coordinate import OrdinalCoordinate
-
 from src.cell.empty_cell import EmptyCell
+from src.coordinate.ordinal_coordinate import OrdinalCoordinate
+from src.repository.abstract_cell_repository import AbstractCellRepository
 
 
 class LineCellRepository(AbstractCellRepository[OrdinalCoordinate]):
@@ -46,3 +45,11 @@ class LineCellRepository(AbstractCellRepository[OrdinalCoordinate]):
 
     def __repr__(self):
         return str(self)
+
+    def clone(self) -> "LineCellRepository":
+        new_repository = LineCellRepository(self.get_count_cells())
+
+        for coordinate, cell in self:
+            new_repository.set_cell(coordinate, cell.clone())
+
+        return new_repository

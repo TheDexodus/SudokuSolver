@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Union, Iterator
+from typing import Iterator
 
 from src.cell.cell import Cell
 from src.coordinate.coordinate import Coordinate
@@ -24,4 +24,8 @@ class CellRepository(ABC):
 
     @abstractmethod
     def __iter__(self) -> Iterator[tuple[Coordinate, Cell]]:
+        pass
+
+    @abstractmethod
+    def clone(self) -> "CellRepository":
         pass
