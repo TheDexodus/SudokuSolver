@@ -12,11 +12,11 @@ class TxtFileFieldLoader(AbstractFileFieldLoader):
         field = RectangleField(self.get_field_size())
 
         for coordinate, value in self.get_values().items():
-            grid_coordinate = TwoDimensionalCoordinate(coordinate.get_x() // self.field_size[0] + 1,
-                                                       coordinate.get_y() // self.field_size[1] + 1)
+            grid_coordinate = TwoDimensionalCoordinate(coordinate.get_x() // self.field_size[1] + 1,
+                                                       coordinate.get_y() // self.field_size[0] + 1)
             grid = field.get_grid(grid_coordinate)
-            cell_coordinate = TwoDimensionalCoordinate(coordinate.get_x() % self.field_size[0] + 1,
-                                                       coordinate.get_y() % self.field_size[1] + 1)
+            cell_coordinate = TwoDimensionalCoordinate(coordinate.get_x() % self.field_size[1] + 1,
+                                                       coordinate.get_y() % self.field_size[0] + 1)
 
             grid.set_cell(cell_coordinate, EmptyCell() if value is None else ConstantCell(value))
 
@@ -68,4 +68,5 @@ class TxtFileFieldLoader(AbstractFileFieldLoader):
 
                 y += 1
 
+        print(values)
         return values

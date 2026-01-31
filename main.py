@@ -4,7 +4,7 @@ from src.loader.txt_file_field_loader import TxtFileFieldLoader
 from src.solver.rectangle_solver import RectangleSolver
 from src.ui.FieldDrawer import FieldDrawer
 
-SUDOKU_FILENAME = "tasks/task2.txt"
+SUDOKU_FILENAME = "tasks/task4.txt"
 
 file_loader = TxtFileFieldLoader(SUDOKU_FILENAME)
 field = file_loader.load()

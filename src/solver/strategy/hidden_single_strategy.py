@@ -30,12 +30,12 @@ class HiddenSingleStrategy(Strategy):
         has_changes = False
 
         for order, line in enumerate(LineBuilder.build_all_horizontal_lines(field), 1):
-            grid_y = (order - 1) // field.get_size()[1] + 1
-            cell_y = (order - 1) % field.get_size()[1] + 1
+            grid_y = (order - 1) // field.get_size()[0] + 1
+            cell_y = (order - 1) % field.get_size()[0] + 1
 
             for line_coordinate, cell in line:
-                grid_x = (line_coordinate.get_order() - 1) // field.get_size()[0] + 1
-                cell_x = (line_coordinate.get_order() - 1) % field.get_size()[0] + 1
+                grid_x = (line_coordinate.get_order() - 1) // field.get_size()[1] + 1
+                cell_x = (line_coordinate.get_order() - 1) % field.get_size()[1] + 1
 
                 grid = field.get_grid(TwoDimensionalCoordinate(grid_x, grid_y))
                 cell_coordinate = TwoDimensionalCoordinate(cell_x, cell_y)
@@ -69,12 +69,12 @@ class HiddenSingleStrategy(Strategy):
         has_changes = False
 
         for order, line in enumerate(LineBuilder.build_all_vertical_lines(field), 1):
-            grid_x = (order - 1) // field.get_size()[0] + 1
-            cell_x = (order - 1) % field.get_size()[0] + 1
+            grid_x = (order - 1) // field.get_size()[1] + 1
+            cell_x = (order - 1) % field.get_size()[1] + 1
 
             for line_coordinate, cell in line:
-                grid_y = (line_coordinate.get_order() - 1) // field.get_size()[1] + 1
-                cell_y = (line_coordinate.get_order() - 1) % field.get_size()[1] + 1
+                grid_y = (line_coordinate.get_order() - 1) // field.get_size()[0] + 1
+                cell_y = (line_coordinate.get_order() - 1) % field.get_size()[0] + 1
 
                 grid = field.get_grid(TwoDimensionalCoordinate(grid_x, grid_y))
                 cell_coordinate = TwoDimensionalCoordinate(cell_x, cell_y)

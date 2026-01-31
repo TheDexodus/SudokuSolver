@@ -1,7 +1,7 @@
 from typing import TypeVar, Generic, Iterator
 
-from src.coordinate.coordinate import Coordinate
 from src.cell.cell import Cell
+from src.coordinate.coordinate import Coordinate
 from src.repository.cell_repository import CellRepository
 
 CoordinateT = TypeVar("CoordinateT", bound=Coordinate)
@@ -14,7 +14,7 @@ class AbstractCellRepository(CellRepository, Generic[CoordinateT]):
 
     def get_cell(self, coordinate: CoordinateT) -> Cell:
         if coordinate not in self._cells:
-            raise IndexError("Coordinate out of bounds")
+            raise IndexError(f"Coordinate out of bounds: Requested cell coordinate: {coordinate.get_id()}")
 
         return self._cells[coordinate]
 
@@ -23,7 +23,7 @@ class AbstractCellRepository(CellRepository, Generic[CoordinateT]):
 
     def set_cell(self, coordinate: CoordinateT, cell: Cell) -> None:
         if coordinate not in self._cells:
-            raise IndexError("Coordinate out of bounds")
+            raise IndexError(f"Coordinate out of bounds: Requested cell coordinate: {coordinate.get_id()}")
 
         if not self._cells[coordinate].can_be_replaced():
             raise RuntimeError("Cell cannot be replaced")

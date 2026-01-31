@@ -7,31 +7,37 @@ from src.repository.line_cell_repository import LineCellRepository
 class LineBuilder:
     @classmethod
     def build_vertical_line(cls, field: Field, order: int) -> LineCellRepository:
-        line = LineCellRepository(field.get_size()[1] ** 2)
-        grid_x = (order - 1) // 3 + 1
-        cell_x = (order - 1) % 3 + 1
+        grid_size_coordinate = field.get_grid(TwoDimensionalCoordinate(1, 1)).get_size()
+        line = LineCellRepository(field.get_size()[1] * grid_size_coordinate[1])
+        grid_x = (order - 1) // grid_size_coordinate[0] + 1
+        cell_x = (order - 1) % grid_size_coordinate[0] + 1
+        order_counter = 1
 
         for grid_y in range(1, field.get_size()[1] + 1):
             grid = field.get_grid(TwoDimensionalCoordinate(grid_x, grid_y))
 
             for cell_y in range(1, grid.get_size()[1] + 1):
                 cell = grid.get_cell(TwoDimensionalCoordinate(cell_x, cell_y))
-                line.set_cell(OrdinalCoordinate((grid_y - 1) * 3 + cell_y), cell)
+                line.set_cell(OrdinalCoordinate(order_counter), cell)
+                order_counter += 1
 
         return line
 
     @classmethod
     def build_horizontal_line(cls, field: Field, order: int) -> LineCellRepository:
-        line = LineCellRepository(field.get_size()[0] ** 2)
-        grid_y = (order - 1) // 3 + 1
-        cell_y = (order - 1) % 3 + 1
+        grid_size_coordinate = field.get_grid(TwoDimensionalCoordinate(1, 1)).get_size()
+        line = LineCellRepository(field.get_size()[0] * grid_size_coordinate[0])
+        grid_y = (order - 1) // grid_size_coordinate[1] + 1
+        cell_y = (order - 1) % grid_size_coordinate[1] + 1
+        order_counter = 1
 
         for grid_x in range(1, field.get_size()[0] + 1):
             grid = field.get_grid(TwoDimensionalCoordinate(grid_x, grid_y))
 
             for cell_x in range(1, grid.get_size()[0] + 1):
                 cell = grid.get_cell(TwoDimensionalCoordinate(cell_x, cell_y))
-                line.set_cell(OrdinalCoordinate((grid_x - 1) * 3 + cell_x), cell)
+                line.set_cell(OrdinalCoordinate(order_counter), cell)
+                order_counter += 1
 
         return line
 
@@ -57,14 +63,14 @@ class LineBuilder:
 
     @classmethod
     def insert_horizontal_line(cls, field: Field, line: LineCellRepository, order: int) -> Field:
-        grid_y = (order - 1) // 3 + 1
-        cell_y = (order - 1) % 3 + 1
+        grid_y = (order - 1) // field.get_size()[0] + 1
+        cell_y = (order - 1) % field.get_size()[0] + 1
 
         for i in range(1, line.get_count_cells() + 1):
             line_cell = line.get_cell(OrdinalCoordinate(i))
 
-            grid_x = (i - 1) // 3 + 1
-            cell_x = (i - 1) % 3 + 1
+            grid_x = (i - 1) // field.get_size()[1] + 1
+            cell_x = (i - 1) % field.get_size()[1] + 1
 
             grid = field.get_grid(TwoDimensionalCoordinate(grid_x, grid_y))
             if grid.get_cell(TwoDimensionalCoordinate(cell_x, cell_y)).can_be_replaced():
@@ -74,14 +80,14 @@ class LineBuilder:
 
     @classmethod
     def insert_vertical_line(cls, field: Field, line: LineCellRepository, order: int) -> Field:
-        grid_x = (order - 1) // 3 + 1
-        cell_x = (order - 1) % 3 + 1
+        grid_x = (order - 1) // field.get_size()[1] + 1
+        cell_x = (order - 1) % field.get_size()[1] + 1
 
         for i in range(1, line.get_count_cells() + 1):
             line_cell = line.get_cell(OrdinalCoordinate(i))
 
-            grid_y = (i - 1) // 3 + 1
-            cell_y = (i - 1) % 3 + 1
+            grid_y = (i - 1) // field.get_size()[0] + 1
+            cell_y = (i - 1) % field.get_size()[0] + 1
 
             grid = field.get_grid(TwoDimensionalCoordinate(grid_x, grid_y))
             if grid.get_cell(TwoDimensionalCoordinate(cell_x, cell_y)).can_be_replaced():

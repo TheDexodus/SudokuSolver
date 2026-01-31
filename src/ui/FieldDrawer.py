@@ -34,34 +34,49 @@ class FieldDrawer:
     def draw(self, screen: pygame.Surface, field: Field) -> None:
         screen.fill(self.bg_color)
 
-        self._draw_grid(screen)
+        self._draw_grid(screen, field.get_size())
         self._draw_numbers(screen, field)
 
-    def _draw_grid(self, screen: pygame.Surface) -> None:
-        grid_size = self.cell_size * 9
+    def _draw_grid(self, screen: pygame.Surface, size: tuple[int, int]) -> None:
+        grids_x, grids_y = size
+
+        cells_in_row = grids_y
+        cells_in_col = grids_x
+
+        total_cells_x = grids_x * cells_in_row
+        total_cells_y = grids_y * cells_in_col
+
         start_x = self.margin
         start_y = self.margin
 
-        for i in range(10):
-            line_width = self.bold_line_width if i % 3 == 0 else self.thin_line_width
+        width = total_cells_x * self.cell_size
+        height = total_cells_y * self.cell_size
 
-            # vertical lines
-            x = start_x + i * self.cell_size
+        # vertical lines
+        for x in range(total_cells_x + 1):
+            line_width = (
+                self.bold_line_width if x % cells_in_row == 0 else self.thin_line_width
+            )
+            px = start_x + x * self.cell_size
             pygame.draw.line(
                 screen,
                 self.line_color,
-                (x, start_y),
-                (x, start_y + grid_size),
+                (px, start_y),
+                (px, start_y + height),
                 line_width,
             )
 
-            # horizontal lines
-            y = start_y + i * self.cell_size
+        # horizontal lines
+        for y in range(total_cells_y + 1):
+            line_width = (
+                self.bold_line_width if y % cells_in_col == 0 else self.thin_line_width
+            )
+            py = start_y + y * self.cell_size
             pygame.draw.line(
                 screen,
                 self.line_color,
-                (start_x, y),
-                (start_x + grid_size, y),
+                (start_x, py),
+                (start_x + width, py),
                 line_width,
             )
 
@@ -69,8 +84,8 @@ class FieldDrawer:
         start_x = self.margin
         start_y = self.margin
 
-        for row in range(1, field.get_size()[1] ** 2 + 1):
-            for col in range(1, field.get_size()[0] ** 2 + 1):
+        for row in range(1, field.get_size()[0] * field.get_size()[1] + 1):
+            for col in range(1, field.get_size()[0] * field.get_size()[1] + 1):
                 grid_x = (col - 1) // field.get_size()[1] + 1
                 grid_y = (row - 1) // field.get_size()[0] + 1
                 cell_x = (col - 1) % field.get_size()[1] + 1

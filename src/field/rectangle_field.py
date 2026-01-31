@@ -17,7 +17,7 @@ class RectangleField(Field):
 
         for y in range(1, size[1] + 1):
             for x in range(1, size[0] + 1):
-                self._grids[TwoDimensionalCoordinate(x, y)] = GridCellRepository(size)
+                self._grids[TwoDimensionalCoordinate(x, y)] = GridCellRepository((size[1], size[0]))
 
     def get_size(self) -> tuple[int, int]:
         return self._size
@@ -26,7 +26,7 @@ class RectangleField(Field):
         if coordinate in self._grids:
             return self._grids[coordinate]
 
-        raise IndexError("Coordinate out of bounds")
+        raise IndexError(f"Coordinate out of bounds: Requested grid coordinate: {coordinate.get_id()}")
 
     def get_cell(self, coordinate: Coordinate) -> Cell | None:
         x, y = (coordinate.x - 1) // self._size[0] + 1, (coordinate.y - 1) // self._size[1] + 1
@@ -37,19 +37,19 @@ class RectangleField(Field):
     def __str__(self) -> str:
         result = ""
 
-        for y in range(1, self._size[1] + 1):
-            result += "\n+" + (("-" * (self._size[0] * 2 + 1)) + "+") * self._size[0]
-            for grid_y in range(1, self._size[1] + 1):
+        for grid_y in range(1, self._size[1] + 1):
+            result += "\n+" + (("-" * (self._size[1] * 2 + 1)) + "+") * self._size[0]
+            for cell_y in range(1, self._size[0] + 1):
                 result += "\n"
-                for x in range(1, self._size[0] + 1):
+                for grid_x in range(1, self._size[0] + 1):
                     result += "| "
-                    grid = self.get_grid(TwoDimensionalCoordinate(x, y))
+                    grid = self.get_grid(TwoDimensionalCoordinate(grid_x, grid_y))
 
-                    for grid_x in range(1, self._size[0] + 1):
-                        cell = grid.get_cell(TwoDimensionalCoordinate(grid_x, grid_y))
+                    for cell_x in range(1, self._size[1] + 1):
+                        cell = grid.get_cell(TwoDimensionalCoordinate(cell_x, cell_y))
                         result += str(" " if cell is None else str(cell)) + " "
                 result += "|"
-        result += "\n+" + (("-" * (self._size[0] * 2 + 1)) + "+") * self._size[0]
+        result += "\n+" + (("-" * (self._size[1] * 2 + 1)) + "+") * self._size[0]
 
         return result.lstrip("\n")
 

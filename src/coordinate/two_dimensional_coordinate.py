@@ -19,3 +19,9 @@ class TwoDimensionalCoordinate(AbstractCoordinate):
     def from_id(cls, id: str) -> "TwoDimensionalCoordinate":
         x, y = id.split(",")
         return TwoDimensionalCoordinate(int(x), int(y))
+
+    def __str__(self) -> str:
+        return f"{self._x},{self._y}"
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({self._x},{self._y})"

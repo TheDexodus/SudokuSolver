@@ -16,6 +16,9 @@ class OrderRandomer(Randomer):
         if new_field is not None:
             self._history.append((new_field.clone(), 0))
 
+        if len(self._history) == 0:
+            return None
+
         previous_field, candidate_selector = self._history[-1]
         field = previous_field.clone()
 
