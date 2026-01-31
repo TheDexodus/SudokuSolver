@@ -1,10 +1,10 @@
 from typing import Iterator
 
 from src.cell.cell import Cell
+from src.coordinate.coordinate import Coordinate
 from src.coordinate.two_dimensional_coordinate import TwoDimensionalCoordinate
 from src.field.field import Field
 from src.repository.grid_cell_repository import GridCellRepository
-from src.unit.coordinate import Coordinate
 
 
 class RectangleField(Field):
