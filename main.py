@@ -21,11 +21,12 @@ field_drawer = FieldDrawer()
 clock = pygame.time.Clock()
 running = True
 
+field_drawer.draw(screen, field)
+pygame.display.flip()
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    field_drawer.draw(screen, field)
-    pygame.display.flip()
     clock.tick(60)

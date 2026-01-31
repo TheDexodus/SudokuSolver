@@ -63,3 +63,6 @@ class RectangleField(Field):
             field._grids[coordinate] = grid.clone()
 
         return field
+
+    def get_length(self) -> int:
+        return self._size[0] * self._size[1]

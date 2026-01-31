@@ -32,6 +32,10 @@ class FieldDrawer:
         self.candidate_color = (150, 150, 150)
 
     def draw(self, screen: pygame.Surface, field: Field) -> None:
+        pygame.display.set_mode((
+            self.margin * 2 + field.get_length() * self.cell_size,
+            self.margin * 2 + field.get_length() * self.cell_size,
+        ))
         screen.fill(self.bg_color)
 
         self._draw_grid(screen, field.get_size())

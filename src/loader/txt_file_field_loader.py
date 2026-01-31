@@ -68,5 +68,4 @@ class TxtFileFieldLoader(AbstractFileFieldLoader):
 
                 y += 1
 
-        print(values)
         return values

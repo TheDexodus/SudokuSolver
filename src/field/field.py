@@ -25,3 +25,7 @@ class Field(ABC):
     @abstractmethod
     def clone(self) -> "Field":
         pass
+
+    @abstractmethod
+    def get_length(self) -> int:
+        pass
