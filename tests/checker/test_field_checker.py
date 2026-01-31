@@ -1,8 +1,8 @@
 import pytest
 
-from data.sudoku.cases import load_final_cases, load_correct_not_final_cases, load_incorrect_cases
 from src.checker.rectangle_field_checker import RectangleFieldChecker
 from src.field.rectangle_field import RectangleField
+from tests.data.sudoku.cases import load_final_cases, load_correct_not_final_cases, load_incorrect_cases
 
 
 @pytest.mark.parametrize(
