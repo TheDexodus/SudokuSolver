@@ -1,7 +1,9 @@
+from abc import ABC
+
 from src.cell.cell import Cell
 
 
-class AbstractCell(Cell):
+class AbstractCell(Cell, ABC):
     def __str__(self):
         return " " if self.get_value() is None else str(self.get_value())
 

@@ -1,3 +1,4 @@
+from abc import ABC
 from typing import TypeVar, Generic, Iterator
 
 from src.cell.cell import Cell
@@ -6,7 +7,7 @@ from src.repository.cell_repository import CellRepository
 
 CoordinateT = TypeVar("CoordinateT", bound=Coordinate)
 
-class AbstractCellRepository(CellRepository, Generic[CoordinateT]):
+class AbstractCellRepository(CellRepository, Generic[CoordinateT], ABC):
     _cells: dict[CoordinateT, Cell]
 
     def get_cells(self) -> dict[CoordinateT, Cell]:

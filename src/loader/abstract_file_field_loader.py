@@ -1,8 +1,10 @@
-from src.loader.field_loader import FieldLoader
+from abc import ABC
 from pathlib import Path
 
+from src.loader.field_loader import FieldLoader
 
-class AbstractFileFieldLoader(FieldLoader):
+
+class AbstractFileFieldLoader(FieldLoader, ABC):
     file_path: Path
 
     def __init__(self, file_path: str | Path):
