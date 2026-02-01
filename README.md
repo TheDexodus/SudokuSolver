@@ -29,3 +29,11 @@ Blank example:
 |       |       |       |
 +-------+-------+-------+
 ```
+
+## Train model
+```bash
+python train_digit_recognizer.py
+```
+
+### Dataset
+At current moment datasets have 9 digits from website https://sudoku.com/extreme/

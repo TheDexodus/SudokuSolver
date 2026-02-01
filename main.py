@@ -1,13 +1,13 @@
 import pygame
 
-from src.loader.txt_file_field_loader import TxtFileFieldLoader
+from src.loader.image.image_field_loader import ImageFileFieldLoader
 from src.solver.rectangle_solver import RectangleSolver
 from src.ui.FieldDrawer import FieldDrawer
 
-SUDOKU_FILENAME = "tasks/task6.txt"
+SUDOKU_FILENAME = "tasks/image_task4.png"
 
-file_loader = TxtFileFieldLoader(SUDOKU_FILENAME)
-field = file_loader.load()
+loader = ImageFileFieldLoader(SUDOKU_FILENAME)
+field = loader.load()
 
 solver = RectangleSolver()
 field = solver.solve(field)
