@@ -1,4 +1,7 @@
+from typing import Union
+
 from src.cell.abstract_cell import AbstractCell
+from src.cell.cell import Cell
 
 
 class CandidateCell(AbstractCell):
@@ -32,13 +35,19 @@ class CandidateCell(AbstractCell):
 
         return new_cell
 
-    def __sub__(self, other: "CandidateCell") -> "CandidateCell":
-        new_cell = CandidateCell()
+    def __sub__(self, other: Union["CandidateCell", int]) -> "CandidateCell":
+        if isinstance(other, int):
+            return CandidateCell(list(set(self.get_possible_values()) - {other}))
 
-        for possible_value in list(set(self.get_possible_values()) - set(other.get_possible_values())):
-            new_cell.add_possible_value(possible_value)
+        if isinstance(other, CandidateCell):
+            new_cell = CandidateCell()
 
-        return new_cell
+            for possible_value in list(set(self.get_possible_values()) - set(other.get_possible_values())):
+                new_cell.add_possible_value(possible_value)
+
+            return new_cell
+
+        raise RuntimeError(f"Candidate cell can't be subtracted from other cell of type {other.__class__.__name__}")
 
     def clone(self) -> "CandidateCell":
         return CandidateCell(self.possible_values)
@@ -52,3 +61,15 @@ class CandidateCell(AbstractCell):
                 return False
 
         return True
+
+    def __eq__(self, other: "Cell") -> bool:
+        if not isinstance(other, CandidateCell):
+            return False
+
+        return self.same_possible_values(other)
+
+    def __ne__(self, other: "Cell") -> bool:
+        if not isinstance(other, CandidateCell):
+            return True
+
+        return not self.same_possible_values(other)

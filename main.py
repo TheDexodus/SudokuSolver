@@ -1,10 +1,10 @@
 import pygame
 
-from src.loader.image.image_field_loader import ImageFileFieldLoader
+from src.loader.image_field_loader import ImageFileFieldLoader
 from src.solver.rectangle_solver import RectangleSolver
 from src.ui.FieldDrawer import FieldDrawer
 
-SUDOKU_FILENAME = "tasks/image_task4.png"
+SUDOKU_FILENAME = "tasks/img.png"
 
 loader = ImageFileFieldLoader(SUDOKU_FILENAME)
 field = loader.load()

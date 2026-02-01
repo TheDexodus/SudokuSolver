@@ -4,9 +4,13 @@ from src.field.rectangle_field import RectangleField
 from src.solver.randomer.order_randomer import OrderRandomer
 from src.solver.randomer.randomer import Randomer
 from src.solver.solver import Solver
-from src.solver.strategy.candidate_elimination_in_grid_strategy import CandidateEliminationInGridStrategy
+from src.solver.strategy.candidate_elimination_in_grid_strategy import CandidateEliminationStrategy
+from src.solver.strategy.hidden_pair_strategy import HiddenPairStrategy
 from src.solver.strategy.hidden_single_strategy import HiddenSingleStrategy
 from src.solver.strategy.init_candidates_strategy import InitialCandidatesStrategy
+from src.solver.strategy.last_hero_strategy import LastHeroStrategy
+from src.solver.strategy.naked_pair_strategy import NakedPairStrategy
+from src.solver.strategy.naked_triple_strategy import NakedTripleStrategy
 from src.solver.strategy.strategy import Strategy
 
 
@@ -18,8 +22,12 @@ class RectangleSolver(Solver):
     def __init__(self):
         self._strategies = [
             InitialCandidatesStrategy(),
-            CandidateEliminationInGridStrategy(),
+            CandidateEliminationStrategy(),
             HiddenSingleStrategy(),
+            HiddenPairStrategy(),
+            NakedPairStrategy(),
+            NakedTripleStrategy(),
+            LastHeroStrategy(),
         ]
         self._general_checker = GeneralChecker([
             RectangleFieldChecker(),

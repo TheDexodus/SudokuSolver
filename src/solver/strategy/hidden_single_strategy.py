@@ -6,19 +6,26 @@ from src.field.line_builder import LineBuilder
 from src.field.rectangle_field import RectangleField
 from src.solver.strategy.strategy import Strategy
 
-'''
-    Стратегия: "Скрытая одиночка"
-    Идея: Если в рамках одного CellRepository только в одном месте можно поставить цифру - ставим)
-    Пример: 
-    X 1 2 3   4 5 6   7 8 9
-  Y +-------+-------+-------+
-  1 |   2   | 4 5 6 | 7 8 9 |
-  2 | 2 1 3 | 6 4 5 | 9 7 8 |
 
-    Тройку можно поставить в двух ячейках([1, 1] и [1, 3]).
-    Но так как тройка на [3, 2] перекрывает [1, 3], мы можем поставить тройку только в [1, 1]
-'''
 class HiddenSingleStrategy(Strategy):
+    """
+        **Стратегия**: "Скрытая одиночка" (Hidden Single)
+
+        **Идея**:
+        В рамках одного CellRepository (строка / колонка / grid)
+        для некоторого значения существует ровно одна ячейка,
+        в которую это значение может быть поставлено.
+
+        При этом сама ячейка может иметь несколько возможных значений,
+        но рассматриваемое значение является уникальным
+        для данного CellRepository.
+
+        **Следствие**:
+        Если значение может быть размещено только в одной ячейке
+        CellRepository — оно обязательно должно быть поставлено
+        в эту ячейку.
+    """
+
     def apply(self, field: RectangleField) -> tuple[RectangleField, bool]:
         field, has_updates_for_grid = self._apply_grid(field)
         field, has_updates_for_horizontal_line = self._apply_horizontal_line(field)

@@ -6,7 +6,34 @@ from src.repository.cell_repository import CellRepository
 from src.solver.strategy.strategy import Strategy
 
 
-class CandidateEliminationInGridStrategy(Strategy):
+class CandidateEliminationStrategy(Strategy):
+    """
+        **Стратегия**: "Исключение кандидатов по фиксированным значениям"
+        (Candidate Elimination in Row / Column / Grid)
+
+        **Идея**:
+        В рамках одного CellRepository (строка / колонка / grid)
+        уже зафиксированные значения (ConstantCell)
+        не могут повторяться.
+
+        Следовательно, если в CellRepository присутствует
+        зафиксированное значение, оно не может быть кандидатом
+        ни в одной другой ячейке этого CellRepository.
+
+        **Следствие**:
+        Для каждой CandidateCell:
+
+        - из списка возможных значений удаляются все значения,
+          которые уже присутствуют в данном CellRepository
+          как ConstantCell
+        - если список кандидатов изменился, ячейка обновляется
+
+        Данная стратегия не устанавливает значения напрямую,
+        а лишь сужает множество возможных кандидатов,
+        подготавливая поле для применения более сложных
+        логических стратегий.
+    """
+
     def apply(self, field: RectangleField) -> tuple[RectangleField, bool]:
         have_updates = False
 

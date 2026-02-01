@@ -1,0 +1,77 @@
+import cv2
+import numpy as np
+
+from src.cell.constant_cell import ConstantCell
+from src.cell.empty_cell import EmptyCell
+from src.coordinate.two_dimensional_coordinate import TwoDimensionalCoordinate
+from src.field.rectangle_field import RectangleField
+from src.loader.abstract_file_field_loader import AbstractFileFieldLoader
+from src.loader.image.cell_extractor import CellExtractor
+from src.loader.image.digit_recognizer import DigitRecognizer
+from src.loader.image.digit_recognizer_cnn import DigitRecognizerCNN
+from src.loader.image.grid_detector import GridDetector
+
+
+class ImageFileFieldLoader(AbstractFileFieldLoader):
+    """
+    Loader, который принимает путь к изображению судоку,
+    находит сетку 9x9 и возвращает RectangleField
+    """
+
+    GRID_SIZE = 9
+    SUBGRID_SIZE = 3
+
+    _recognizer: DigitRecognizer
+    _grid_detector: GridDetector
+    _cell_extractor: CellExtractor
+
+    def __init__(self, file_path):
+        super().__init__(file_path)
+        self._recognizer = DigitRecognizerCNN()
+        self._grid_detector = GridDetector()
+        self._cell_extractor = CellExtractor()
+
+    def load(self) -> RectangleField:
+        image = self._load_image()
+        grid_rect = self._grid_detector.detect_grid(image)
+        cells = self._cell_extractor.extract_cells(image, grid_rect)
+        values = self._recognize_digits(cells)
+
+        return self._build_field(values)
+
+    def _load_image(self) -> np.ndarray:
+        image = cv2.imread(str(self.file_path), cv2.IMREAD_GRAYSCALE)
+        if image is None:
+            raise ValueError(f"Cannot load image {self.file_path}")
+        return image
+
+    def _recognize_digits(self, cells: dict[tuple[int, int], np.ndarray]) -> dict[tuple[int, int], int | None]:
+        values = {}
+
+        for (x, y), cell in cells.items():
+            values[(x, y)] = self._recognizer.recognize(cell)
+
+        return values
+
+    def _build_field(self, values: dict[tuple[int, int], int | None]) -> RectangleField:
+        field = RectangleField((self.SUBGRID_SIZE, self.SUBGRID_SIZE))
+
+        for (x, y), value in values.items():
+            grid_coord = TwoDimensionalCoordinate(
+                x // self.SUBGRID_SIZE + 1,
+                y // self.SUBGRID_SIZE + 1,
+            )
+
+            cell_coord = TwoDimensionalCoordinate(
+                x % self.SUBGRID_SIZE + 1,
+                y % self.SUBGRID_SIZE + 1,
+            )
+
+            grid = field.get_grid(grid_coord)
+
+            grid.set_cell(
+                cell_coord,
+                EmptyCell() if value is None else ConstantCell(value),
+            )
+
+        return field

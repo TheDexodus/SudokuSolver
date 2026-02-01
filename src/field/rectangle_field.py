@@ -19,6 +19,14 @@ class RectangleField(Field):
             for x in range(1, size[0] + 1):
                 self._grids[TwoDimensionalCoordinate(x, y)] = GridCellRepository((size[1], size[0]))
 
+    def set_cell(self, coordinate: TwoDimensionalCoordinate, cell: Cell) -> None:
+        x, y = coordinate.get_col(), coordinate.get_row()
+        grid_x, grid_y = (x - 1) // self._size[0] + 1, (y - 1) // self._size[1] + 1
+        cell_x, cell_y = (x - 1) % self._size[0] + 1, (y - 1) % self._size[1] + 1
+        grid_coordinate = TwoDimensionalCoordinate(grid_x, grid_y)
+        cell_coordinate = TwoDimensionalCoordinate(cell_x, cell_y)
+        self.get_grid(grid_coordinate).set_cell(cell_coordinate, cell)
+
     def get_size(self) -> tuple[int, int]:
         return self._size
 
