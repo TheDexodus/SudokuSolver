@@ -27,14 +27,14 @@ class NakedPairStrategy(Strategy):
         has_updates = False
 
         # Поиск в рамках одного column
-        for column_order, column_line in enumerate(LineBuilder.build_all_vertical_lines(field), 1):
+        for column_order, column_line in enumerate(LineBuilder.build_all_column_lines(field), 1):
             changes: list[tuple[OrdinalCoordinate, CandidateCell]] = self._apply_for_repository(column_line)
 
             for cell_coordinate, new_cell in changes:
                 field.set_cell(TwoDimensionalCoordinate(column_order, cell_coordinate.get_order()), new_cell)
 
         # Поиск в рамках одного row
-        for row_order, row_line in enumerate(LineBuilder.build_all_horizontal_lines(field), 1):
+        for row_order, row_line in enumerate(LineBuilder.build_all_row_lines(field), 1):
             changes: list[tuple[OrdinalCoordinate, CandidateCell]] = self._apply_for_repository(row_line)
 
             for cell_coordinate, new_cell in changes:

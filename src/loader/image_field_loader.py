@@ -49,6 +49,10 @@ class ImageFileFieldLoader(AbstractFileFieldLoader):
         values = {}
 
         for (x, y), cell in cells.items():
+            # cv2.imwrite(
+            #     f"debug/cell_{y}_{x}.png",
+            #     cell
+            # )
             values[(x, y)] = self._recognizer.recognize(cell)
 
         return values

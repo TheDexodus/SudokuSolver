@@ -23,7 +23,7 @@ def test_vertical_line_build():
     rectangle_field = get_ascending_rectangle_field()
 
     for j in range(1, 10):
-        line = LineBuilder.build_vertical_line(rectangle_field, j)
+        line = LineBuilder.build_column_line(rectangle_field, j)
         assert line.get_count_cells() == 9
 
         for i in range(1, 10):
@@ -34,7 +34,7 @@ def test_horizontal_line_build():
     rectangle_field = get_ascending_rectangle_field()
 
     for j in range(1, 10):
-        line = LineBuilder.build_horizontal_line(rectangle_field, j)
+        line = LineBuilder.build_row_line(rectangle_field, j)
         assert line.get_count_cells() == 9
 
         for i in range(1, 10):

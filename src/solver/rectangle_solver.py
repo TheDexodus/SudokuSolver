@@ -8,10 +8,13 @@ from src.solver.strategy.candidate_elimination_in_grid_strategy import Candidate
 from src.solver.strategy.hidden_pair_strategy import HiddenPairStrategy
 from src.solver.strategy.hidden_single_strategy import HiddenSingleStrategy
 from src.solver.strategy.init_candidates_strategy import InitialCandidatesStrategy
+from src.solver.strategy.jellyfish_strategy import JellyfishStrategy
 from src.solver.strategy.last_hero_strategy import LastHeroStrategy
 from src.solver.strategy.naked_pair_strategy import NakedPairStrategy
 from src.solver.strategy.naked_triple_strategy import NakedTripleStrategy
 from src.solver.strategy.strategy import Strategy
+from src.solver.strategy.sword_fish_strategy import SwordFishStrategy
+from src.solver.strategy.x_wing_strategy import XWingStrategy
 
 
 class RectangleSolver(Solver):
@@ -27,6 +30,9 @@ class RectangleSolver(Solver):
             HiddenPairStrategy(),
             NakedPairStrategy(),
             NakedTripleStrategy(),
+            XWingStrategy(),
+            SwordFishStrategy(),
+            JellyfishStrategy(),
             LastHeroStrategy(),
         ]
         self._general_checker = GeneralChecker([
@@ -38,7 +44,7 @@ class RectangleSolver(Solver):
         self._randomer.reset()
         has_updates_in_loop = True
         loops_counter = 0
-        limit = 1000
+        limit = 1
 
         while not self._general_checker.check_final(field) and limit > 0:
             limit -= 1

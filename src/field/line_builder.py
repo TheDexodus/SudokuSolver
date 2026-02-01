@@ -6,7 +6,7 @@ from src.repository.line_cell_repository import LineCellRepository
 
 class LineBuilder:
     @classmethod
-    def build_vertical_line(cls, field: Field, order: int) -> LineCellRepository:
+    def build_column_line(cls, field: Field, order: int) -> LineCellRepository:
         grid_size_coordinate = field.get_grid(TwoDimensionalCoordinate(1, 1)).get_size()
         line = LineCellRepository(field.get_size()[1] * grid_size_coordinate[1])
         grid_x = (order - 1) // grid_size_coordinate[0] + 1
@@ -24,7 +24,7 @@ class LineBuilder:
         return line
 
     @classmethod
-    def build_horizontal_line(cls, field: Field, order: int) -> LineCellRepository:
+    def build_row_line(cls, field: Field, order: int) -> LineCellRepository:
         grid_size_coordinate = field.get_grid(TwoDimensionalCoordinate(1, 1)).get_size()
         line = LineCellRepository(field.get_size()[0] * grid_size_coordinate[0])
         grid_y = (order - 1) // grid_size_coordinate[1] + 1
@@ -42,22 +42,22 @@ class LineBuilder:
         return line
 
     @classmethod
-    def build_all_vertical_lines(cls, field: Field) -> list[LineCellRepository]:
+    def build_all_column_lines(cls, field: Field) -> list[LineCellRepository]:
         lines: list[LineCellRepository] = []
         grid_size_coordinate = field.get_grid(TwoDimensionalCoordinate(1, 1)).get_size()
 
         for order in range(1, field.get_size()[0] * grid_size_coordinate[0] + 1):
-            lines.append(cls.build_vertical_line(field, order))
+            lines.append(cls.build_column_line(field, order))
 
         return lines
 
     @classmethod
-    def build_all_horizontal_lines(cls, field: Field) -> list[LineCellRepository]:
+    def build_all_row_lines(cls, field: Field) -> list[LineCellRepository]:
         lines: list[LineCellRepository] = []
         grid_size_coordinate = field.get_grid(TwoDimensionalCoordinate(1, 1)).get_size()
 
         for order in range(1, field.get_size()[1] * grid_size_coordinate[1] + 1):
-            lines.append(cls.build_horizontal_line(field, order))
+            lines.append(cls.build_row_line(field, order))
 
         return lines
 

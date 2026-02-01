@@ -16,7 +16,7 @@ class HiddenPairStrategy(Strategy):
     def apply(self, field: RectangleField) -> tuple[RectangleField, bool]:
         has_updates = False
 
-        for row_order, row_line in enumerate(LineBuilder.build_all_horizontal_lines(field), 1):
+        for row_order, row_line in enumerate(LineBuilder.build_all_row_lines(field), 1):
             for column_coordinate, cell in row_line:
                 if not isinstance(cell, CandidateCell):
                     continue
@@ -68,7 +68,7 @@ class HiddenPairStrategy(Strategy):
                             grid.set_cell(remove_grid_coordinate, remove_cell - possible_value)
                             has_updates = True
 
-        for column_order, column_line in enumerate(LineBuilder.build_all_vertical_lines(field), 1):
+        for column_order, column_line in enumerate(LineBuilder.build_all_column_lines(field), 1):
             for row_coordinate, cell in column_line:
                 if not isinstance(cell, CandidateCell):
                     continue

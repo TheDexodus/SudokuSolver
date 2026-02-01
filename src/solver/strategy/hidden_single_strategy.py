@@ -36,7 +36,7 @@ class HiddenSingleStrategy(Strategy):
     def _apply_horizontal_line(self, field: RectangleField) -> tuple[RectangleField, bool]:
         has_changes = False
 
-        for order, line in enumerate(LineBuilder.build_all_horizontal_lines(field), 1):
+        for order, line in enumerate(LineBuilder.build_all_row_lines(field), 1):
             grid_y = (order - 1) // field.get_size()[0] + 1
             cell_y = (order - 1) % field.get_size()[0] + 1
 
@@ -50,14 +50,14 @@ class HiddenSingleStrategy(Strategy):
                 if not isinstance(cell, CandidateCell):
                     continue
 
-                for possible_value in cell.possible_values:
+                for possible_value in cell._possible_values:
                     hidden_single = True
 
                     for another_cell_coordinate, another_cell in line:
                         if another_cell_coordinate == line_coordinate:
                             continue
 
-                        if isinstance(another_cell, CandidateCell) and possible_value in another_cell.possible_values:
+                        if isinstance(another_cell, CandidateCell) and possible_value in another_cell._possible_values:
                             hidden_single = False
                             break
 
@@ -75,7 +75,7 @@ class HiddenSingleStrategy(Strategy):
     def _apply_vertical_line(self, field: RectangleField) -> tuple[RectangleField, bool]:
         has_changes = False
 
-        for order, line in enumerate(LineBuilder.build_all_vertical_lines(field), 1):
+        for order, line in enumerate(LineBuilder.build_all_column_lines(field), 1):
             grid_x = (order - 1) // field.get_size()[1] + 1
             cell_x = (order - 1) % field.get_size()[1] + 1
 
@@ -89,14 +89,14 @@ class HiddenSingleStrategy(Strategy):
                 if not isinstance(cell, CandidateCell):
                     continue
 
-                for possible_value in cell.possible_values:
+                for possible_value in cell._possible_values:
                     hidden_single = True
 
                     for another_cell_coordinate, another_cell in line:
                         if another_cell_coordinate == line_coordinate:
                             continue
 
-                        if isinstance(another_cell, CandidateCell) and possible_value in another_cell.possible_values:
+                        if isinstance(another_cell, CandidateCell) and possible_value in another_cell._possible_values:
                             hidden_single = False
                             break
 
@@ -119,14 +119,14 @@ class HiddenSingleStrategy(Strategy):
                 if not isinstance(cell, CandidateCell):
                     continue
 
-                for possible_value in cell.possible_values:
+                for possible_value in cell._possible_values:
                     hidden_single = True
 
                     for another_cell_coordinate, another_cell in grid:
                         if another_cell_coordinate == cell_coordinate:
                             continue
 
-                        if isinstance(another_cell, CandidateCell) and possible_value in another_cell.possible_values:
+                        if isinstance(another_cell, CandidateCell) and possible_value in another_cell._possible_values:
                             hidden_single = False
                             break
 

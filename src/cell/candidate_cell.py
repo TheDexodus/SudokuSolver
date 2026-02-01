@@ -5,11 +5,11 @@ from src.cell.cell import Cell
 
 
 class CandidateCell(AbstractCell):
-    possible_values: list[int]
+    _possible_values: list[int]
 
     def __init__(self, possible_values: list[int] = None) -> None:
         super().__init__()
-        self.possible_values = [] if possible_values is None else possible_values
+        self._possible_values = [] if possible_values is None else possible_values
 
     def get_value(self) -> int | None:
         return None
@@ -18,14 +18,14 @@ class CandidateCell(AbstractCell):
         return True
 
     def get_possible_values(self) -> list[int]:
-        return self.possible_values
+        return self._possible_values
 
     def add_possible_value(self, possible_value: int) -> None:
-        if possible_value not in self.possible_values:
-            self.possible_values.append(possible_value)
+        if possible_value not in self._possible_values:
+            self._possible_values.append(possible_value)
 
     def is_possible_value(self, possible_value: int) -> bool:
-        return possible_value in self.possible_values
+        return possible_value in self._possible_values
 
     def __and__(self, other: "CandidateCell") -> "CandidateCell":
         new_cell = CandidateCell()
@@ -50,14 +50,14 @@ class CandidateCell(AbstractCell):
         raise RuntimeError(f"Candidate cell can't be subtracted from other cell of type {other.__class__.__name__}")
 
     def clone(self) -> "CandidateCell":
-        return CandidateCell(self.possible_values)
+        return CandidateCell(self._possible_values)
 
     def same_possible_values(self, candidate_cell: "CandidateCell") -> bool:
-        if len(self.possible_values) != len(candidate_cell.possible_values):
+        if len(self._possible_values) != len(candidate_cell._possible_values):
             return False
 
-        for possible_value in self.possible_values:
-            if possible_value not in candidate_cell.possible_values:
+        for possible_value in self._possible_values:
+            if possible_value not in candidate_cell._possible_values:
                 return False
 
         return True

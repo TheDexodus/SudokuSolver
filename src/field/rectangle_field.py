@@ -36,11 +36,11 @@ class RectangleField(Field):
 
         raise IndexError(f"Coordinate out of bounds: Requested grid coordinate: {coordinate.get_id()}")
 
-    def get_cell(self, coordinate: Coordinate) -> Cell | None:
-        x, y = (coordinate.x - 1) // self._size[0] + 1, (coordinate.y - 1) // self._size[1] + 1
-        grid_x, grid_y = (coordinate.x - 1) % self._size[0] + 1, (coordinate.y - 1) % self._size[1] + 1
+    def get_cell(self, coordinate: TwoDimensionalCoordinate) -> Cell | None:
+        grid_col, grid_row = (coordinate.get_col() - 1) // self._size[0] + 1, (coordinate.get_row() - 1) // self._size[1] + 1
+        cell_col, cell_row = (coordinate.get_col() - 1) % self._size[0] + 1, (coordinate.get_row() - 1) % self._size[1] + 1
 
-        return self._grids[TwoDimensionalCoordinate(x, y)].get_cell(TwoDimensionalCoordinate(grid_x, grid_y))
+        return self._grids[TwoDimensionalCoordinate(grid_col, grid_row)].get_cell(TwoDimensionalCoordinate(cell_col, cell_row))
 
     def __str__(self) -> str:
         result = ""

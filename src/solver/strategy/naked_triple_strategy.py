@@ -30,7 +30,7 @@ class NakedTripleStrategy(Strategy):
         has_updates = False
 
         # columns
-        for column_order, column in enumerate(LineBuilder.build_all_vertical_lines(field), 1):
+        for column_order, column in enumerate(LineBuilder.build_all_column_lines(field), 1):
             changes = self._apply_for_repository(column)
 
             for cell_coordinate, new_cell in changes:
@@ -38,7 +38,7 @@ class NakedTripleStrategy(Strategy):
                 has_updates = True
 
         # rows
-        for row_order, row in enumerate(LineBuilder.build_all_horizontal_lines(field), 1):
+        for row_order, row in enumerate(LineBuilder.build_all_row_lines(field), 1):
             changes = self._apply_for_repository(row)
 
             for cell_coordinate, new_cell in changes:

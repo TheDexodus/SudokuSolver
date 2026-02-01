@@ -22,7 +22,7 @@ class RectangleFieldChecker(Checker[RectangleField]):
         self._grid_checker = grid_checker
 
     def check_correct(self, obj: RectangleField) -> bool:
-        lines = LineBuilder.build_all_vertical_lines(obj) + LineBuilder.build_all_horizontal_lines(obj)
+        lines = LineBuilder.build_all_column_lines(obj) + LineBuilder.build_all_row_lines(obj)
 
         for line in lines:
             if not self._line_checker.check_correct(line):
@@ -45,7 +45,7 @@ class RectangleFieldChecker(Checker[RectangleField]):
         return True
 
     def check_final(self, obj: RectangleField) -> bool:
-        lines = LineBuilder.build_all_vertical_lines(obj) + LineBuilder.build_all_horizontal_lines(obj)
+        lines = LineBuilder.build_all_column_lines(obj) + LineBuilder.build_all_row_lines(obj)
 
         for line in lines:
             if not self._line_checker.check_final(line):
