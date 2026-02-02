@@ -62,7 +62,7 @@ class LineBuilder:
         return lines
 
     @classmethod
-    def insert_horizontal_line(cls, field: Field, line: LineCellRepository, order: int) -> Field:
+    def insert_row_line(cls, field: Field, line: LineCellRepository, order: int) -> Field:
         grid_y = (order - 1) // field.get_size()[0] + 1
         cell_y = (order - 1) % field.get_size()[0] + 1
 
@@ -79,7 +79,7 @@ class LineBuilder:
         return field
 
     @classmethod
-    def insert_vertical_line(cls, field: Field, line: LineCellRepository, order: int) -> Field:
+    def insert_column_line(cls, field: Field, line: LineCellRepository, order: int) -> Field:
         grid_x = (order - 1) // field.get_size()[1] + 1
         cell_x = (order - 1) % field.get_size()[1] + 1
 

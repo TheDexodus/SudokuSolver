@@ -1,19 +1,17 @@
 import pygame
 
-from src.cell.candidate_cell import CandidateCell
-from src.coordinate.two_dimensional_coordinate import TwoDimensionalCoordinate
 from src.loader.image_field_loader import ImageFileFieldLoader
+from src.loader.txt_file_field_loader import TxtFileFieldLoader
 from src.solver.rectangle_solver import RectangleSolver
 from src.ui.FieldDrawer import FieldDrawer
 
 SUDOKU_FILENAME = "tasks/img.png"
 
 loader = ImageFileFieldLoader(SUDOKU_FILENAME)
+# loader = TxtFileFieldLoader(SUDOKU_FILENAME)
 field = loader.load()
 
 solver = RectangleSolver()
-field = solver.solve(field)
-field.set_cell(TwoDimensionalCoordinate(3, 3), CandidateCell([3, 8]))
 field = solver.solve(field)
 print(field)
 

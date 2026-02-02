@@ -2,7 +2,7 @@ from src.cell.candidate_cell import CandidateCell
 from src.cell.constant_cell import ConstantCell
 from src.coordinate.two_dimensional_coordinate import TwoDimensionalCoordinate
 from src.field.rectangle_field import RectangleField
-from src.solver.strategy.hidden_single_strategy import HiddenSingleStrategy
+from src.solver.strategy.hidden.hidden_single_strategy import HiddenSingleStrategy
 
 
 def make_field_for_test_grid() -> RectangleField:

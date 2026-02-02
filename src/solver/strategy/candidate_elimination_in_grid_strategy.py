@@ -45,14 +45,14 @@ class CandidateEliminationStrategy(Strategy):
             new_line, have_updates_in_repository = self._apply_for_cell_repository(line)
 
             if have_updates_in_repository:
-                LineBuilder.insert_horizontal_line(field, new_line, order)
+                LineBuilder.insert_row_line(field, new_line, order)
                 have_updates = True
 
         for order, line in enumerate(LineBuilder.build_all_column_lines(field), 1):
             new_line, have_updates_in_repository = self._apply_for_cell_repository(line)
 
             if have_updates_in_repository:
-                LineBuilder.insert_vertical_line(field, new_line, order)
+                LineBuilder.insert_column_line(field, new_line, order)
 
                 have_updates = True
 

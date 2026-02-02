@@ -5,16 +5,17 @@ from src.solver.randomer.order_randomer import OrderRandomer
 from src.solver.randomer.randomer import Randomer
 from src.solver.solver import Solver
 from src.solver.strategy.candidate_elimination_in_grid_strategy import CandidateEliminationStrategy
-from src.solver.strategy.hidden_pair_strategy import HiddenPairStrategy
-from src.solver.strategy.hidden_single_strategy import HiddenSingleStrategy
+from src.solver.strategy.fish.jelly_fish_strategy import JellyFishStrategy
+from src.solver.strategy.fish.squirmbag_strategy import SquirmbagStrategy
+from src.solver.strategy.fish.sword_fish_strategy import SwordFishStrategy
+from src.solver.strategy.hidden.hidden_pair_strategy import HiddenPairStrategy
+from src.solver.strategy.hidden.hidden_single_strategy import HiddenSingleStrategy
 from src.solver.strategy.init_candidates_strategy import InitialCandidatesStrategy
-from src.solver.strategy.jellyfish_strategy import JellyfishStrategy
 from src.solver.strategy.last_hero_strategy import LastHeroStrategy
-from src.solver.strategy.naked_pair_strategy import NakedPairStrategy
-from src.solver.strategy.naked_triple_strategy import NakedTripleStrategy
+from src.solver.strategy.naked.naked_pair_strategy import NakedPairStrategy
+from src.solver.strategy.naked.naked_triple_strategy import NakedTripleStrategy
 from src.solver.strategy.strategy import Strategy
-from src.solver.strategy.sword_fish_strategy import SwordFishStrategy
-from src.solver.strategy.x_wing_strategy import XWingStrategy
+from src.solver.strategy.fish.x_wing_strategy import XWingStrategy
 
 
 class RectangleSolver(Solver):
@@ -22,7 +23,11 @@ class RectangleSolver(Solver):
     _general_checker: GeneralChecker
     _randomer: Randomer
 
-    def __init__(self):
+    _randomer_limit: int
+
+    def __init__(self, randomer_limit: int = 0):
+        self._randomer_limit = randomer_limit
+
         self._strategies = [
             InitialCandidatesStrategy(),
             CandidateEliminationStrategy(),
@@ -32,7 +37,8 @@ class RectangleSolver(Solver):
             NakedTripleStrategy(),
             XWingStrategy(),
             SwordFishStrategy(),
-            JellyfishStrategy(),
+            JellyFishStrategy(),
+            SquirmbagStrategy(),
             LastHeroStrategy(),
         ]
         self._general_checker = GeneralChecker([
@@ -44,7 +50,7 @@ class RectangleSolver(Solver):
         self._randomer.reset()
         has_updates_in_loop = True
         loops_counter = 0
-        limit = 1
+        limit = self._randomer_limit + 1
 
         while not self._general_checker.check_final(field) and limit > 0:
             limit -= 1
@@ -70,5 +76,7 @@ class RectangleSolver(Solver):
 
                     if has_updates:
                         break
+
+        print(f"Count loops: {loops_counter}; Кол-во подстановок: {self._randomer_limit - limit}")
 
         return field
